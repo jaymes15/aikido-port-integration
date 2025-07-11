@@ -11,12 +11,15 @@ from aikido.resync_handlers import (
     resync_container_images,
 )
 from logging_config import get_logger
+from aikido.webhooks.registry import register_webhook_processors
+
 
 logger = get_logger()
 
 
 # Initialize the Aikido client
 client = None
+
 
 
 @ocean.on_start()
@@ -35,6 +38,7 @@ async def on_start():
             f"[main] ⏰ Polling interval: {ocean.config.event_listener.interval} seconds"
         )
     AikidoAuth.get_instance()
+    register_webhook_processors("/webhook")
     logger.info("[main] ✅ Aikido integration started successfully")
 
 
