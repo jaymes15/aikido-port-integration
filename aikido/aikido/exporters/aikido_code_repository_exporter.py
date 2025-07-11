@@ -24,7 +24,7 @@ class AikidoCodeRepositoryExporter:
         try:
             logger.info(f"[{self.__class__.__name__}] kind={self.KIND} Starting export from Aikido API")
             # Fetch code repositories from Aikido API
-            response = await self.client.get("/code-repositories")
+            response = await self.client.get("/repositories/code")
             logger.info(f"[{self.__class__.__name__}] kind={self.KIND} API status={response.status_code}")
             response.raise_for_status()
             

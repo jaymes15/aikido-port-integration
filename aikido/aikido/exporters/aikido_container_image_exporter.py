@@ -24,7 +24,7 @@ class AikidoContainerImageExporter:
         try:
             logger.info(f"[{self.__class__.__name__}] kind={self.KIND} Starting export from Aikido API")
             # Fetch container images from Aikido API
-            response = await self.client.get("/container-images")
+            response = await self.client.get("/containers")
             logger.info(f"[{self.__class__.__name__}] kind={self.KIND} API status={response.status_code}")
             response.raise_for_status()
             

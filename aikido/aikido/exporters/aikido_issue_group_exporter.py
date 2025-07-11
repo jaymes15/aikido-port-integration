@@ -24,7 +24,7 @@ class AikidoIssueGroupExporter:
         try:
             logger.info(f"[{self.__class__.__name__}] kind={self.KIND} Starting export from Aikido API")
             # Fetch issue groups from Aikido API
-            response = await self.client.get("/issue-groups")
+            response = await self.client.get("/issues/export")
             logger.info(f"[{self.__class__.__name__}] kind={self.KIND} API status={response.status_code}")
             response.raise_for_status()
             
