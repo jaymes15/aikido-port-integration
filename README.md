@@ -11,7 +11,7 @@ This integration imports Aikido resources into Port.
 
 Below is a screenshot of the Aikido integration successfully syncing all resource types into Port Ocean:
 
-![Aikido Exporters Synced](docs/port-exporters-synced.png)
+![Aikido Exporters Synced](aikido/docs/port-exporters-synced.png)
 
 - All exporters show a green status, indicating successful sync.
 - The catalog was last updated recently, confirming recent activity.
