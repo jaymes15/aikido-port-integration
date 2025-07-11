@@ -42,12 +42,12 @@ class AikidoContainerImageExporter:
             for image in container_images:
                 transformed_image = {
                     "id": image.get("id"),
-                    "name": image.get("name"),
-                    "provider": image.get("provider"),
-                    "registry_name": image.get("registry_name"),
-                    "tag": image.get("tag"),
-                    "last_scanned_at": image.get("last_scanned_at"),
-                    "last_scanned_tag": image.get("last_scanned_tag"),
+                    "name": image.get("name") or "",
+                    "provider": image.get("provider") or "",
+                    "registry_name": image.get("registry_name") or "",
+                    "tag": image.get("tag") or "",
+                    "last_scanned_at": image.get("last_scanned_at", 0),
+                    "last_scanned_tag": image.get("last_scanned_tag") or "",
                 }
                 logger.debug(
                     f"[{self.__class__.__name__}] kind={self.KIND} Exported image | id={transformed_image['id']} name={transformed_image['name']} tag={transformed_image['tag']}"

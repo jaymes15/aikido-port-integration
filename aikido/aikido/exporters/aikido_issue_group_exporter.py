@@ -27,6 +27,7 @@ class AikidoIssueGroupExporter:
             )
             # Fetch issue groups from Aikido API
             response = await self.client.get("/issues/export")
+            print(":::::response", response)
             logger.info(
                 f"[{self.__class__.__name__}] kind={self.KIND} API status={response.status_code}"
             )
@@ -42,15 +43,15 @@ class AikidoIssueGroupExporter:
             for group in issue_groups:
                 transformed_group = {
                     "id": group.get("id"),
-                    "type": group.get("type"),
-                    "title": group.get("title"),
-                    "description": group.get("description"),
-                    "severity_score": group.get("severity_score"),
-                    "severity": group.get("severity"),
-                    "group_status": group.get("group_status"),
-                    "time_to_fix_minutes": group.get("time_to_fix_minutes"),
+                    "type": group.get("type", ""),
+                    "title": group.get("title") or "",  # Convert null to empty string
+                    "description": group.get("description") or "",  # Convert null to empty string
+                    "severity_score": group.get("severity_score", 0),
+                    "severity": group.get("severity", ""),
+                    "group_status": group.get("group_status") or "",  # Convert null to empty string
+                    "time_to_fix_minutes": group.get("time_to_fix_minutes", 0),  # Convert null to 0
                     "locations": group.get("locations", []),
-                    "how_to_fix": group.get("how_to_fix"),
+                    "how_to_fix": group.get("how_to_fix") or "",  # Convert null to empty string
                     "related_cve_ids": group.get("related_cve_ids", []),
                 }
                 logger.debug(

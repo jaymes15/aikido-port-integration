@@ -42,13 +42,13 @@ class AikidoCodeRepositoryExporter:
             for repo in code_repositories:
                 transformed_repo = {
                     "id": repo.get("id"),
-                    "name": repo.get("name"),
-                    "external_repo_id": repo.get("external_repo_id"),
-                    "provider": repo.get("provider"),
-                    "active": repo.get("active"),
-                    "url": repo.get("url"),
-                    "branch": repo.get("branch"),
-                    "last_scanned_at": repo.get("last_scanned_at"),
+                    "name": repo.get("name") or "",
+                    "external_repo_id": repo.get("external_repo_id") or "",
+                    "provider": repo.get("provider") or "",
+                    "active": repo.get("active", False),
+                    "url": repo.get("url") or "",
+                    "branch": repo.get("branch") or "",
+                    "last_scanned_at": repo.get("last_scanned_at", 0),
                 }
                 logger.debug(
                     f"[{self.__class__.__name__}] kind={self.KIND} Exported repo | id={transformed_repo['id']} name={transformed_repo['name']} provider={transformed_repo['provider']}"

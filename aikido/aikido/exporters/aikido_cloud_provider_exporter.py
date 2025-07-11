@@ -33,10 +33,10 @@ class AikidoCloudProviderExporter:
             for provider in cloud_providers:
                 transformed_provider = {
                     "id": provider.get("id"),
-                    "name": provider.get("name"),
-                    "provider": provider.get("provider"),
-                    "environment": provider.get("environment"),
-                    "external_id": provider.get("external_id"),
+                    "name": provider.get("name") or "",
+                    "provider": provider.get("provider") or "",
+                    "environment": provider.get("environment") or "",
+                    "external_id": provider.get("external_id") or "",
                 }
                 logger.debug(
                     f"[{self.__class__.__name__}] kind={self.KIND} Exported provider | id={transformed_provider['id']} name={transformed_provider['name']} environment={transformed_provider['environment']}"
