@@ -1,5 +1,8 @@
 import pytest
-from aikido.exporters.aikido_code_repository_exporter import AikidoCodeRepositoryExporter
+from aikido.exporters.aikido_code_repository_exporter import (
+    AikidoCodeRepositoryExporter,
+)
+
 
 class TestAikidoCodeRepositoryExporter:
     @pytest.mark.asyncio
@@ -15,7 +18,7 @@ class TestAikidoCodeRepositoryExporter:
                 "active": True,
                 "url": "https://github.com/example/repo",
                 "branch": "main",
-                "last_scanned_at": 1234567890
+                "last_scanned_at": 1234567890,
             }
         ]
         mock_response.status_code = 200
@@ -25,4 +28,4 @@ class TestAikidoCodeRepositoryExporter:
         result = await exporter.export()
         assert isinstance(result, list)
         assert result[0]["id"] == 300
-        assert result[0]["name"] == "repo" 
+        assert result[0]["name"] == "repo"

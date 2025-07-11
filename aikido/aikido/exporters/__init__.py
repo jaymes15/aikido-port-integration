@@ -7,9 +7,9 @@ from .aikido_container_image_exporter import AikidoContainerImageExporter
 
 __all__ = [
     "AikidoIssueGroupExporter",
-    "AikidoIssueExporter", 
+    "AikidoIssueExporter",
     "AikidoIssueCountExporter",
     "AikidoCloudProviderExporter",
     "AikidoCodeRepositoryExporter",
-    "AikidoContainerImageExporter"
+    "AikidoContainerImageExporter",
 ]

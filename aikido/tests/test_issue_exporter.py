@@ -1,6 +1,7 @@
 import pytest
 from aikido.exporters.aikido_issue_exporter import AikidoIssueExporter
 
+
 class TestAikidoIssueExporter:
     @pytest.mark.asyncio
     async def test_export(self, mocker):
@@ -13,7 +14,7 @@ class TestAikidoIssueExporter:
                 "status": "open",
                 "severity": "high",
                 "type": "vuln",
-                "title": "Test Issue"
+                "title": "Test Issue",
             }
         ]
         mock_response.status_code = 200
@@ -23,4 +24,4 @@ class TestAikidoIssueExporter:
         result = await exporter.export()
         assert isinstance(result, list)
         assert result[0]["id"] == 100
-        assert result[0]["group_id"] == 10 
+        assert result[0]["group_id"] == 10

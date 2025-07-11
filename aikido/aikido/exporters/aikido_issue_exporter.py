@@ -1,36 +1,42 @@
 from typing import Any, Dict, List
 from aikido.auth import AikidoAuth
 from aikido.http.rest_client import RestClient
-from aikido.kind import ObjectKind
 from logging_config import get_logger
+
 logger = get_logger()
 
 
 class AikidoIssueExporter:
     KIND = "aikidoIssue"
     """Exporter for Aikido Issues"""
-    
+
     def __init__(self):
         self.auth = AikidoAuth.get_instance()
         self.client = RestClient(self.auth)
-    
+
     async def export(self) -> List[Dict[str, Any]]:
         """
         Export all issues from Aikido API
-        
+
         Returns:
             List of issue dictionaries with the structure expected by Port
         """
         try:
-            logger.info(f"[{self.__class__.__name__}] kind={self.KIND} Starting export from Aikido API")
+            logger.info(
+                f"[{self.__class__.__name__}] kind={self.KIND} Starting export from Aikido API"
+            )
             # Fetch issues from Aikido API
             response = await self.client.get("/issues/export")
-            logger.info(f"[{self.__class__.__name__}] kind={self.KIND} API status={response.status_code}")
+            logger.info(
+                f"[{self.__class__.__name__}] kind={self.KIND} API status={response.status_code}"
+            )
             response.raise_for_status()
-            
+
             issues = response.json()
-            logger.info(f"[{self.__class__.__name__}] kind={self.KIND} Received {len(issues)} items from API")
-            
+            logger.info(
+                f"[{self.__class__.__name__}] kind={self.KIND} Received {len(issues)} items from API"
+            )
+
             # Transform the data to match Port's expected format
             transformed_issues = []
             for issue in issues:
@@ -64,18 +70,25 @@ class AikidoIssueExporter:
                     "license_type": issue.get("license_type"),
                     "programming_language": issue.get("programming_language"),
                     "sla_days": issue.get("sla_days"),
-                    "sla_remediate_by": issue.get("sla_remediate_by")
+                    "sla_remediate_by": issue.get("sla_remediate_by"),
                 }
-                logger.debug(f"[{self.__class__.__name__}] kind={self.KIND} Exported issue | id={transformed_issue['id']} group_id={transformed_issue['group_id']} severity={transformed_issue['severity']}")
+                logger.debug(
+                    f"[{self.__class__.__name__}] kind={self.KIND} Exported issue | id={transformed_issue['id']} group_id={transformed_issue['group_id']} severity={transformed_issue['severity']}"
+                )
                 transformed_issues.append(transformed_issue)
-            logger.info(f"[{self.__class__.__name__}] kind={self.KIND} Successfully exported {len(transformed_issues)} issues")
+            logger.info(
+                f"[{self.__class__.__name__}] kind={self.KIND} Successfully exported {len(transformed_issues)} issues"
+            )
             return transformed_issues
-            
+
         except Exception as e:
-            logger.error(f"[{self.__class__.__name__}] kind={self.KIND} Failed to export issues | error={e}", exc_info=True)
+            logger.error(
+                f"[{self.__class__.__name__}] kind={self.KIND} Failed to export issues | error={e}",
+                exc_info=True,
+            )
             # Log the error and return empty list
             return []
-    
+
     async def close(self):
         """Close the HTTP client"""
-        await self.client.close() 
+        await self.client.close()

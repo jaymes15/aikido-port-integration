@@ -1,5 +1,8 @@
 import pytest
-from aikido.exporters.aikido_container_image_exporter import AikidoContainerImageExporter
+from aikido.exporters.aikido_container_image_exporter import (
+    AikidoContainerImageExporter,
+)
+
 
 class TestAikidoContainerImageExporter:
     @pytest.mark.asyncio
@@ -14,7 +17,7 @@ class TestAikidoContainerImageExporter:
                 "registry_name": None,
                 "tag": "latest",
                 "last_scanned_at": 1234567890,
-                "last_scanned_tag": "latest"
+                "last_scanned_tag": "latest",
             }
         ]
         mock_response.status_code = 200
@@ -24,4 +27,4 @@ class TestAikidoContainerImageExporter:
         result = await exporter.export()
         assert isinstance(result, list)
         assert result[0]["id"] == 200
-        assert result[0]["name"] == "nginx" 
+        assert result[0]["name"] == "nginx"

@@ -1,16 +1,17 @@
 import sys
 from loguru import logger
 
+
 def setup_logging(level: str = "INFO"):
     """
     Setup logging configuration for the integration.
-    
+
     Args:
         level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
     """
     # Remove default handler
     logger.remove()
-    
+
     # Add console handler with custom format
     logger.add(
         sys.stdout,
@@ -18,9 +19,9 @@ def setup_logging(level: str = "INFO"):
         level=level,
         colorize=True,
         backtrace=True,
-        diagnose=True
+        diagnose=True,
     )
-    
+
     # Add file handler for persistent logs
     logger.add(
         "logs/integration.log",
@@ -30,9 +31,9 @@ def setup_logging(level: str = "INFO"):
         retention="7 days",
         compression="zip",
         backtrace=True,
-        diagnose=True
+        diagnose=True,
     )
-    
+
     # Add error file handler
     logger.add(
         "logs/errors.log",
@@ -42,12 +43,13 @@ def setup_logging(level: str = "INFO"):
         retention="30 days",
         compression="zip",
         backtrace=True,
-        diagnose=True
+        diagnose=True,
     )
-    
+
     logger.info(f"🔧 Logging configured with level: {level}")
     logger.info("📁 Logs will be saved to: logs/integration.log and logs/errors.log")
 
+
 def get_logger():
     """Get the configured logger instance."""
-    return logger 
+    return logger

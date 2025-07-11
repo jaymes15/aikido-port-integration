@@ -7,25 +7,26 @@ from aikido.auth.enums import AikidoTokenResponse
 
 load_dotenv()
 
+
 class AikidoAuth:
     _instance = None
     _lock = asyncio.Lock()
-    
+
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance._initialized = False
         return cls._instance
-    
+
     def __init__(self):
         if self._initialized:
             return
-            
+
         self.client_id = os.getenv("OCEAN__INTEGRATION__CONFIG__CLIENT_ID")
         self.client_secret = os.getenv("OCEAN__INTEGRATION__CONFIG__CLIENT_SECRET")
-        self.base_url ="https://app.aikido.dev/api"
+        self.base_url = "https://app.aikido.dev/api"
         self.token_url = f"{self.base_url}/oauth/token"
-        
+
         self._token: Optional[AikidoTokenResponse] = None
         self._token_lock = asyncio.Lock()
         self._initialized = True
@@ -36,7 +37,7 @@ class AikidoAuth:
             # Return cached token if not expired
             if self._token and not self._token.is_expired():
                 return self._token
-            
+
             # Refresh token
             await self._refresh_token()
             return self._token
@@ -44,11 +45,11 @@ class AikidoAuth:
     async def _refresh_token(self):
         """Refresh the access token"""
         import base64
-        
+
         # Create Basic Auth header
         credentials = f"{self.client_id}:{self.client_secret}"
         encoded_credentials = base64.b64encode(credentials.encode()).decode()
-        
+
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 self.token_url,
@@ -57,7 +58,7 @@ class AikidoAuth:
                 },
                 headers={
                     "Content-Type": "application/json",
-                    "Authorization": f"Basic {encoded_credentials}"
+                    "Authorization": f"Basic {encoded_credentials}",
                 },
             )
             try:

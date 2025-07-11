@@ -1,6 +1,7 @@
 import pytest
 from aikido.exporters.aikido_cloud_provider_exporter import AikidoCloudProviderExporter
 
+
 class TestAikidoCloudProviderExporter:
     @pytest.mark.asyncio
     async def test_export(self, mocker):
@@ -12,7 +13,7 @@ class TestAikidoCloudProviderExporter:
                 "name": "example-cloud",
                 "provider": "aws",
                 "environment": "production",
-                "external_id": "123456789"
+                "external_id": "123456789",
             }
         ]
         mock_response.status_code = 200

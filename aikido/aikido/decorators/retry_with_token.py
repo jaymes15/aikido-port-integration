@@ -4,13 +4,13 @@ import httpx
 
 def retry_with_token_refresh(func):
     """Decorator that automatically handles token refresh on 401 errors"""
+
     @wraps(func)
     async def wrapper(self, *args, **kwargs):
         # First attempt - get current token
         token_response = await self.auth.get_token()
-        kwargs['token'] = token_response.access_token
-       
-        
+        kwargs["token"] = token_response.access_token
+
         try:
             response = await func(self, *args, **kwargs)
             response.raise_for_status()
@@ -20,8 +20,8 @@ def retry_with_token_refresh(func):
                 # Token might be expired, invalidate and retry once
                 await self.auth.invalidate_token()
                 token_response = await self.auth.get_token()
-                kwargs['token'] = token_response.access_token
-                
+                kwargs["token"] = token_response.access_token
+
                 # Retry the request
                 response = await func(self, *args, **kwargs)
                 response.raise_for_status()
@@ -29,7 +29,8 @@ def retry_with_token_refresh(func):
             else:
                 # Re-raise non-401 errors
                 raise
-        except Exception as e:
+        except Exception:
             # Re-raise other exceptions
             raise
+
     return wrapper
