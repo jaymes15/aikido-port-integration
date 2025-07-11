@@ -1,24 +1,90 @@
-# Aikido Integration
+# Aikido Integration for Port Ocean
 
-This integration imports Aikido resources into Port.
+This integration syncs Aikido resources into [Port Ocean](https://www.getport.io/), enabling visibility and governance across your software catalog.
+
+---
+
+## 🚀 Getting Started
+
+### ✅ Prerequisites
+
+* Python `3.12.11` or later
+* [Poetry](https://python-poetry.org/)
+* [Port Ocean CLI](https://pypi.org/project/port-ocean/)
+* [Helm](https://helm.sh/) (for local Kubernetes deployments)
+* [Minikube](https://minikube.sigs.k8s.io/) (optional for local k8s)
+
+---
+
+### 🔧 Setup Instructions
+
+1. **Clone the Repository**
+
+   ```sh
+   git clone <repo-url>
+   cd aikido
+   ```
+
+2. **Configure Environment Variables**
+
+   ```sh
+   cp .env.example .env
+   # Then edit .env and update credentials as needed
+   ```
+
+3. **Create and Activate Virtual Environment**
+
+   ```sh
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+4. **Install Port Ocean CLI**
+
+   ```sh
+   pip install "port-ocean[cli]"
+   ```
+
+5. **Install Dependencies (including dev)**
+
+   ```sh
+   poetry install
+   ```
+
+6. **Run the Integration**
+
+   ```sh
+   make run
+   ```
+
+---
 
 ## 📦 Features
 
-- Syncs Aikido resources (issues, groups, cloud providers, code repositories, container images, and more) into Port Ocean.
-- Designed for easy deployment and extension.
+* Syncs various Aikido resources into Port Ocean:
 
-## ✅ Integration in Action
+  * Issues
+  * Groups
+  * Cloud Providers
+  * Code Repositories
+  * Container Images
+  * And more
+* Fully extendable and ready for production use.
+* Designed for easy local and cloud deployment.
 
-Below is a screenshot of the Aikido integration successfully syncing all resource types into Port Ocean:
+---
+
+## 💪 Integration in Action
+
+The integration syncs Aikido resources to Port Ocean and reflects them as green (healthy) exporters in the Port UI.
 
 ![Aikido Exporters Synced](aikido/docs/port-exporters-synced.png)
 
-- All exporters show a green status, indicating successful sync.
-- The catalog was last updated recently, confirming recent activity.
+---
 
-## 🚀 Local Deployment to Minikube (Helm Reference)
+## 🧪 Local Deployment with Helm (Minikube)
 
-> **Note:** The following command is for local deployment of Port Ocean to a minikube cluster using Helm.
+Deploy Port Ocean locally using Helm and Minikube:
 
 ```sh
 helm upgrade --install git-init port-labs/port-ocean \
@@ -32,48 +98,69 @@ helm upgrade --install git-init port-labs/port-ocean \
   --set integration.config.aikidoClientSecret=<aikidoClientSecret>
 ```
 
-- Make sure your minikube cluster is running and Helm is installed.
-- **Replace secrets and tokens with your own values as needed.**
+> **Note:** Replace placeholder values (`<...>`) with your actual credentials.
 
 ---
 
-## 🛠️ Development
+## 🧰 Running Tests
 
-- [Integration documentation](https://docs.port.io/build-your-software-catalog/sync-data-to-catalog/)  
-  *(Replace this link with a link to this integration's documentation if available)*
-- [Ocean integration development documentation](https://ocean.getport.io/develop-an-integration/)
+Run all unit and integration tests with:
+
+```sh
+poetry run pytest
+```
+
+Useful options:
+
+* Verbose mode: `pytest -v`
+* Run matching pattern: `pytest -k <pattern>`
+
+Tests are located in `aikido/tests/`, and new tests should follow the `test_*.py` naming convention.
 
 ---
 
-## 📄 Project Structure
+## 📁 Project Structure
 
-- `aikido/` – Main integration package
-  - `aikido/exporters/` – Exporter classes for each Aikido resource (issues, groups, cloud providers, etc.)
-  - `aikido/auth/` – Authentication logic (OAuth2, token refresh, etc.)
-  - `aikido/http/` – HTTP client and retry logic
-  - `aikido/kind/` – Enum definitions for resource kinds
-  - `aikido/resync_handlers/` – Handlers for Port Ocean resync events, one per resource type
-  - `aikido/main.py` – Entrypoint for the integration (startup, event loop, handler registration)
-  - `aikido/tests/` – Unit and integration tests for the exporters and handlers
-- `.port/` – Port Ocean configuration and blueprints
-  - `resources/blueprints.json` – Blueprint schemas for all Aikido resource types
-  - `resources/port-app-config.yml` – Mapping config for syncing Aikido data to Port
-  - `spec.yaml` – Integration metadata for Port
-- `logging_config.py` – Centralized logging setup using Loguru (console and file logging)
-- `README.md` – Project documentation, setup, and usage instructions
-- `requirements.txt` – Python dependencies for the integration
-- `Dockerfile` – Container build instructions for deployment
+```
+aikido/
+├── auth/                # OAuth2 and token management
+├── exporters/           # Exporters for each Aikido resource
+├── http/                # HTTP client with retries
+├── kind/                # Enum definitions for resource kinds
+├── resync_handlers/     # Handlers for Port Ocean resync events
+├── tests/               # Unit and integration tests
+├── main.py              # Entrypoint: startup, loop, handler registration
+.port/
+├── resources/
+│   ├── blueprints.json         # Blueprint schemas
+│   └── port-app-config.yml     # Resource mapping config
+├── spec.yaml                   # Integration metadata
+Dockerfile                      # Container instructions
+logging_config.py               # Centralized Loguru config
+requirements.txt                # Python dependencies
+README.md                       # Project documentation
+```
 
-> This structure makes it easy to extend the integration, add new resource types, or update configuration and blueprints as Aikido or Port evolve.
+---
+
+## 📚 Resources
+
+* [Port Integration Docs](https://docs.port.io/build-your-software-catalog/sync-data-to-catalog/)
+* [Port Ocean SDK Docs](https://ocean.getport.io/develop-an-integration/)
+* *(Replace with project-specific documentation if available)*
 
 ---
 
 ## 🤝 Contributing
 
-Pull requests and issues are welcome!
+Contributions are welcome!
+Feel free to open issues, suggest improvements, or submit pull requests.
 
 ---
 
 ## 📧 Support
 
-For help, open an issue or contact the maintainers. 
+For questions or help, please:
+
+* Open an issue in the repository
+* Contact the maintainers directly
