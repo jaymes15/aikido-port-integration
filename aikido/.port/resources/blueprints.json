@@ -1,0 +1,194 @@
+[
+    {
+      "identifier": "aikidoCloudProvider",
+      "title": "Aikido Cloud Provider",
+      "description": "Cloud infrastructure providers connected to Aikido",
+      "icon": "cloud",
+      "schema": {
+        "properties": {
+          "id": { "type": "string", "title": "ID" },
+          "name": { "type": "string", "title": "Name" },
+          "provider": { "type": "string", "title": "Provider" },
+          "environment": { "type": "string", "title": "Environment" },
+          "external_id": { "type": "string", "title": "External ID" }
+        },
+        "required": []
+      },
+      "relations": {}
+    },
+    {
+      "identifier": "aikidoIssueGroup",
+      "title": "Aikido Issue Group",
+      "description": "Groups of related security issues with common characteristics",
+      "icon": "shield",
+      "schema": {
+        "properties": {
+          "id": { "type": "string", "title": "ID" },
+          "type": { "type": "string", "title": "Type" },
+          "title": { "type": "string", "title": "Title" },
+          "description": { "type": "string", "title": "Description" },
+          "severity_score": { "type": "number", "title": "Severity Score" },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"],
+            "title": "Severity"
+          },
+          "group_status": { "type": "string", "title": "Status" },
+          "time_to_fix_minutes": { "type": "number", "title": "Time To Fix (minutes)" },
+          "locations": {
+            "type": "array",
+            "title": "Locations",
+            "items": {
+              "type": "object",
+              "title": "Location",
+              "properties": {
+                "id": { "type": "number", "title": "ID" },
+                "name": { "type": "string", "title": "Name" },
+                "type": { "type": "string", "title": "Type" }
+              }
+            }
+          },
+          "how_to_fix": { "type": "string", "title": "How To Fix" },
+          "related_cve_ids": {
+            "type": "array",
+            "items": { "type": "string", "title": "CVE ID" },
+            "title": "Related CVE IDs"
+          }
+        },
+        "required": []
+      },
+      "relations": {}
+    },
+    {
+      "identifier": "aikidoIssue",
+      "title": "Aikido Issue",
+      "description": "Individual security vulnerabilities and issues detected by Aikido",
+      "icon": "bug",
+      "schema": {
+        "properties": {
+          "id": { "type": "string", "title": "ID" },
+          "group_id": { "type": "number", "title": "Issue Group ID" },
+          "attack_surface": { "type": "string", "title": "Attack Surface" },
+          "status": {
+            "type": "string",
+            "enum": ["open", "closed", "ignored", "snoozed"],
+            "title": "Status"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"],
+            "title": "Severity"
+          },
+          "severity_score": { "type": "number", "title": "Severity Score" },
+          "type": { "type": "string", "title": "Type" },
+          "affected_package": { "type": "string", "title": "Affected Package" },
+          "cve_id": { "type": "string", "title": "CVE ID" },
+          "affected_file": { "type": "string", "title": "Affected File" },
+          "first_detected_at": { "type": "number", "title": "First Detected Timestamp" },
+          "code_repo_id": { "type": "number", "title": "Code Repo ID" },
+          "code_repo_name": { "type": "string", "title": "Code Repo Name" },
+          "container_repo_id": { "type": "number", "title": "Container Repo ID" },
+          "container_repo_name": { "type": "string", "title": "Container Repo Name" },
+          "cloud_id": { "type": "number", "title": "Cloud ID" },
+          "cloud_name": { "type": "string", "title": "Cloud Name" },
+          "ignored_at": { "type": "string", "title": "Ignored At" },
+          "closed_at": { "type": "string", "title": "Closed At" },
+          "ignored_by": { "type": "string", "title": "Ignored By" },
+          "start_line": { "type": "number", "title": "Start Line" },
+          "end_line": { "type": "number", "title": "End Line" },
+          "snooze_until": { "type": "string", "title": "Snooze Until" },
+          "cwe_classes": {
+            "type": "array",
+            "items": { "type": "string", "title": "CWE Class" },
+            "title": "CWE Classes"
+          },
+          "installed_version": { "type": "string", "title": "Installed Version" },
+          "patched_versions": {
+            "type": "array",
+            "items": { "type": "string", "title": "Patched Version" },
+            "title": "Patched Versions"
+          },
+          "license_type": { "type": "string", "title": "License Type" },
+          "programming_language": { "type": "string", "title": "Programming Language" },
+          "sla_days": { "type": "number", "title": "SLA Days" },
+          "sla_remediate_by": { "type": "string", "title": "SLA Remediate By" }
+        },
+        "required": []
+      },
+      "relations": {}
+    },
+    {
+      "identifier": "aikidoIssueCount",
+      "title": "Aikido Issue Count",
+      "description": "Aggregated counts of security issues by severity level",
+      "icon": "dashboard",
+      "schema": {
+        "properties": {
+          "issue_groups": {
+            "type": "object",
+            "title": "Issue Groups Count",
+            "properties": {
+              "critical": { "type": "number", "title": "Critical" },
+              "high": { "type": "number", "title": "High" },
+              "medium": { "type": "number", "title": "Medium" },
+              "low": { "type": "number", "title": "Low" },
+              "all": { "type": "number", "title": "All" }
+            }
+          },
+          "issues": {
+            "type": "object",
+            "title": "Issues Count",
+            "properties": {
+              "critical": { "type": "number", "title": "Critical" },
+              "high": { "type": "number", "title": "High" },
+              "medium": { "type": "number", "title": "Medium" },
+              "low": { "type": "number", "title": "Low" },
+              "all": { "type": "number", "title": "All" }
+            }
+          }
+        },
+        "required": []
+      },
+      "relations": {}
+    },
+    {
+      "identifier": "aikidoCodeRepository",
+      "title": "Aikido Code Repository",
+      "description": "Source code repositories monitored by Aikido",
+      "icon": "code",
+      "schema": {
+        "properties": {
+          "id": { "type": "number", "title": "ID" },
+          "name": { "type": "string", "title": "Name" },
+          "external_repo_id": { "type": "string", "title": "External Repo ID" },
+          "provider": { "type": "string", "title": "Provider" },
+          "active": { "type": "boolean", "title": "Active" },
+          "url": { "type": "string", "title": "URL" },
+          "branch": { "type": "string", "title": "Branch" },
+          "last_scanned_at": { "type": "number", "title": "Last Scanned Timestamp" }
+        },
+        "required": []
+      },
+      "relations": {}
+    },
+    {
+      "identifier": "aikidoContainerImage",
+      "title": "Aikido Container Image",
+      "description": "Docker container images scanned by Aikido",
+      "icon": "docker",
+      "schema": {
+        "properties": {
+          "id": { "type": "number", "title": "ID" },
+          "name": { "type": "string", "title": "Name" },
+          "provider": { "type": "string", "title": "Provider" },
+          "registry_name": { "type": "string", "title": "Registry Name" },
+          "tag": { "type": "string", "title": "Tag" },
+          "last_scanned_at": { "type": "number", "title": "Last Scanned Timestamp" },
+          "last_scanned_tag": { "type": "string", "title": "Last Scanned Tag" }
+        },
+        "required": []
+      },
+      "relations": {}
+    }
+  ]
+  

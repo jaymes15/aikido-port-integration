@@ -1,0 +1,30 @@
+description: >
+  Ingests Aikido vulnerabilities into Port to give security teams visibility and context
+  in the software catalog.
+
+icon: shield
+
+features:
+  - type: exporter
+    section: Security & Compliance
+    resources:
+      - kind: aikido-issue-group
+      - kind: aikido-issue
+      - kind: aikido-cloud-provider
+      - kind: aikido-code-repository
+      - kind: aikido-container-image
+      - kind: aikido-issue-count
+
+configurations:
+  - name: aikidoClientId
+    type: string
+    sensitive: true
+  - name: aikidoClientSecret
+    type: string
+    sensitive: true
+  - name: aikidoBaseUrl
+    type: url
+    required: false
+    default: https://api.aikido.dev/api/public/v1
+    description: The base URL of the Aikido API
+  
