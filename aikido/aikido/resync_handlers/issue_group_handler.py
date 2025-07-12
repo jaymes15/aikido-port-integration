@@ -1,17 +1,18 @@
 from typing import Any
+from loguru import logger
 from aikido.exporters import AikidoIssueGroupExporter
 
 
 async def resync_issue_groups(kind: str) -> list[dict[str, Any]]:
     """Handle resync for Aikido Issue Groups"""
-    print(f"🔄 Starting issue group resync for kind: {kind}")
+    logger.info(f"🔄 Starting issue group resync for kind: {kind}")
 
     try:
         exporter = AikidoIssueGroupExporter()
         try:
             issue_groups = await exporter.export()
-            print(f"📦 Retrieved {len(issue_groups)} issue groups from Aikido")
-            print(
+            logger.info(f"📦 Retrieved {len(issue_groups)} issue groups from Aikido")
+            logger.info(
                 f"✅ Issue group resync completed successfully. Returning {len(issue_groups)} issue groups"
             )
             return issue_groups
@@ -19,5 +20,5 @@ async def resync_issue_groups(kind: str) -> list[dict[str, Any]]:
             await exporter.close()
 
     except Exception as e:
-        print(f"❌ Error during issue group resync: {str(e)}")
+        logger.error(f"❌ Error during issue group resync: {str(e)}", exc_info=True)
         raise

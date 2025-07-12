@@ -28,3 +28,7 @@ configurations:
     default: https://api.aikido.dev/api/public/v1
     description: The base URL of the Aikido API
   
+saas:
+  enabled: true
+  liveEvents:
+    enabled: true

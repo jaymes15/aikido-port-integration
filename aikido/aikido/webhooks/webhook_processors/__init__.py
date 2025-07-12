@@ -1,3 +1,6 @@
-from .issue_count_webhook_processor import AikidoIssueCountWebhookProcessor
+from .issue_created_webhook_processor import AikidoIssueCreatedWebhookProcessor
 
-__all__ = ["AikidoIssueCountWebhookProcessor"]
+
+__all__ = [
+    "AikidoIssueCreatedWebhookProcessor"
+]

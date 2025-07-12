@@ -1,9 +1,13 @@
 from port_ocean.context.ocean import ocean
-from aikido.webhooks.webhook_processors.issue_count_webhook_processor import AikidoIssueCountWebhookProcessor
+from aikido.webhooks.webhook_processors import AikidoIssueCreatedWebhookProcessor
+from logging_config import get_logger
+
+logger = get_logger()
 
 
-def register_webhook_processors(path: str ="/webhook")->None:
+def register_webhook_processors(path: str = "/webhook") -> None:
     """
-    Register webhook processors for the given path.
+    Register all webhook processors for the given path.
     """
-    ocean.add_webhook_processor(path, AikidoIssueCountWebhookProcessor)
+    logger.info(f"Registering webhook processors")
+    ocean.add_webhook_processor(path, AikidoIssueCreatedWebhookProcessor)
