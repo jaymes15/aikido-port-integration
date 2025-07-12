@@ -35,6 +35,7 @@ class AikidoIssueCreatedWebhookProcessor(AbstractWebhookProcessor):
         return kinds
     
     async def authenticate(self, payload: EventPayload, headers: EventHeaders) -> bool:
+        # TODO: Implement authentication
         return True
 
     async def validate_payload(self, payload: EventPayload) -> bool:
