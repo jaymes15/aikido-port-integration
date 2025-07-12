@@ -91,6 +91,27 @@ class RestClient:
             raise
 
     @retry_with_token_refresh
+    async def patch(
+        self,
+        url: str,
+        json: Optional[Dict[str, Any]] = None,
+        token: Optional[str] = None,
+    ) -> httpx.Response:
+        headers = self._build_headers(token)
+        full_url = f"{self.base_url}{url}"
+        logger.info(f"[RestClient] PATCH {full_url}")
+        logger.debug(f"[RestClient] PATCH headers={headers} json={json}")
+        try:
+            response = await self.client.patch(full_url, json=json, headers=headers)
+            logger.debug(
+                f"[RestClient] PATCH {full_url} status={response.status_code} body={response.text[:300]}"
+            )
+            return response
+        except Exception as e:
+            logger.error(f"[RestClient] PATCH {full_url} failed: {e}", exc_info=True)
+            raise
+
+    @retry_with_token_refresh
     async def delete(self, url: str, token: Optional[str] = None) -> httpx.Response:
         headers = self._build_headers(token)
         full_url = f"{self.base_url}{url}"

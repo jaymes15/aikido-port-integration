@@ -1,17 +1,18 @@
 from typing import Any
+from loguru import logger
 from aikido.exporters import AikidoCloudProviderExporter
 
 
 async def resync_cloud_providers(kind: str) -> list[dict[str, Any]]:
     """Handle resync for Aikido Cloud Providers"""
-    print(f"🔄 Starting cloud provider resync for kind: {kind}")
+    logger.info(f"🔄 Starting cloud provider resync for kind: {kind}")
 
     try:
         exporter = AikidoCloudProviderExporter()
         try:
             cloud_providers = await exporter.export()
-            print(f"📦 Retrieved {len(cloud_providers)} cloud providers from Aikido")
-            print(
+            logger.info(f"📦 Retrieved {len(cloud_providers)} cloud providers from Aikido")
+            logger.info(
                 f"✅ Cloud provider resync completed successfully. Returning {len(cloud_providers)} cloud providers"
             )
             return cloud_providers
@@ -19,5 +20,5 @@ async def resync_cloud_providers(kind: str) -> list[dict[str, Any]]:
             await exporter.close()
 
     except Exception as e:
-        print(f"❌ Error during cloud provider resync: {str(e)}")
+        logger.error(f"❌ Error during cloud provider resync: {str(e)}", exc_info=True)
         raise
