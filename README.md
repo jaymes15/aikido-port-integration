@@ -32,26 +32,41 @@ This integration syncs Aikido resources into [Port Ocean](https://www.getport.io
    # Then edit .env and update credentials as needed
    ```
 
-3. **Create and Activate Virtual Environment**
+3. **Configure Webhook Base URL**
+
+   **Important**: Set the `OCEAN__BASE_URL` environment variable to your integration's public URL. This is crucial for webhook functionality as it determines the base URL for webhook endpoints.
+
+   ```sh
+   export OCEAN__BASE_URL="https://your-integration-domain.com"
+   ```
+
+   For local development, you can use:
+   ```sh
+   export OCEAN__BASE_URL="http://localhost:8000"
+   ```
+
+   > **Note**: The webhook endpoints will be available at `{OCEAN__BASE_URL}/webhook/`. This URL must be publicly accessible for Aikido to send webhook events.
+
+4. **Create and Activate Virtual Environment**
 
    ```sh
    python3 -m venv .venv
    source .venv/bin/activate
    ```
 
-4. **Install Port Ocean CLI**
+5. **Install Port Ocean CLI**
 
    ```sh
    pip install "port-ocean[cli]"
    ```
 
-5. **Install Dependencies (including dev)**
+6. **Install Dependencies (including dev)**
 
    ```sh
    poetry install
    ```
 
-6. **Run the Integration**
+7. **Run the Integration**
 
    ```sh
    make run
