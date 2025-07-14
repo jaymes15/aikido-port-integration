@@ -28,8 +28,21 @@ This integration syncs Aikido resources into [Port Ocean](https://www.getport.io
 2. **Configure Environment Variables**
 
    ```sh
-   cp .env.example .env
+   cp env.example .env
    # Then edit .env and update credentials as needed
+   ```
+
+   **Required Environment Variables:**
+   - `OCEAN__INTEGRATION__CONFIG__AIKIDO_CLIENT_ID` - Your Aikido client ID
+   - `OCEAN__INTEGRATION__CONFIG__AIKIDO_CLIENT_SECRET` - Your Aikido client secret
+   - `OCEAN__BASE_URL` - Your integration's public URL (for webhooks)
+
+   **Example .env file:**
+   ```bash
+   OCEAN__BASE_URL=http://localhost:8000
+   OCEAN__INTEGRATION__CONFIG__AIKIDO_CLIENT_ID=your_aikido_client_id
+   OCEAN__INTEGRATION__CONFIG__AIKIDO_CLIENT_SECRET=your_aikido_client_secret
+   OCEAN__INTEGRATION__CONFIG__AIKIDO_BASE_URL=https://app.aikido.dev/api/public/v1
    ```
 
 3. **Configure Webhook Base URL**
