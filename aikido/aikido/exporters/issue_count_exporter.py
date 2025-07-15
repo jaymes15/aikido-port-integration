@@ -35,20 +35,7 @@ class IssueCountExporter:
 
             issue_count = response.json()
 
-            # Transform the data to match Port's expected format
-            # The API might return counts directly or we might need to aggregate them
-
-            transformed_count = {
-                "issue_groups": issue_count.get("issue_groups", {}),
-                "issues": issue_count.get("issues", {}),
-            }
-            logger.debug(
-                f"[{self.__class__.__name__}] kind={self.KIND} Exported count | issue_groups={transformed_count['issue_groups']} issues={transformed_count['issues']}"
-            )
-            logger.info(
-                f"[{self.__class__.__name__}] kind={self.KIND} Successfully exported issue counts"
-            )
-            return [transformed_count]
+            return [issue_count]
 
         except Exception as e:
             logger.error(

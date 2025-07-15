@@ -30,23 +30,8 @@ class CloudProviderExporter:
             logger.info(
                 f"[{self.__class__.__name__}] kind={self.KIND} Received {len(cloud_providers)} items from API"
             )
-            transformed_providers = []
-            for provider in cloud_providers:
-                transformed_provider = {
-                    "id": provider.get("id"),
-                    "name": provider.get("name") or "",
-                    "provider": provider.get("provider") or "",
-                    "environment": provider.get("environment") or "",
-                    "external_id": provider.get("external_id") or "",
-                }
-                logger.debug(
-                    f"[{self.__class__.__name__}] kind={self.KIND} Exported provider | id={transformed_provider['id']} name={transformed_provider['name']} environment={transformed_provider['environment']}"
-                )
-                transformed_providers.append(transformed_provider)
-            logger.info(
-                f"[{self.__class__.__name__}] kind={self.KIND} Successfully exported {len(transformed_providers)} cloud providers"
-            )
-            return transformed_providers
+         
+            return cloud_providers
         except Exception as e:
             logger.error(
                 f"[{self.__class__.__name__}] kind={self.KIND} Failed to export cloud providers | error={e}",

@@ -39,27 +39,7 @@ class CodeRepositoryExporter:
                 f"[{self.__class__.__name__}] kind={self.KIND} Received {len(code_repositories)} items from API"
             )
 
-            # Transform the data to match Port's expected format
-            transformed_repos = []
-            for repo in code_repositories:
-                transformed_repo = {
-                    "id": repo.get("id"),
-                    "name": repo.get("name") or "",
-                    "external_repo_id": repo.get("external_repo_id") or "",
-                    "provider": repo.get("provider") or "",
-                    "active": repo.get("active", False),
-                    "url": repo.get("url") or "",
-                    "branch": repo.get("branch") or "",
-                    "last_scanned_at": repo.get("last_scanned_at", 0),
-                }
-                logger.debug(
-                    f"[{self.__class__.__name__}] kind={self.KIND} Exported repo | id={transformed_repo['id']} name={transformed_repo['name']} provider={transformed_repo['provider']}"
-                )
-                transformed_repos.append(transformed_repo)
-            logger.info(
-                f"[{self.__class__.__name__}] kind={self.KIND} Successfully exported {len(transformed_repos)} code repositories"
-            )
-            return transformed_repos
+            return code_repositories
 
         except Exception as e:
             logger.error(
