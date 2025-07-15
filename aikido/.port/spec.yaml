@@ -10,9 +10,6 @@ features:
     resources:
       - kind: issue-group
       - kind: issue
-      - kind: cloud-provider
-      - kind: code-repository
-      - kind: container-image
       - kind: issue-count
 
 configurations:

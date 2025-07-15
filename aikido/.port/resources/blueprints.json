@@ -1,21 +1,5 @@
 [
-    {
-      "identifier": "cloudProvider",
-      "title": "Cloud Provider",
-      "description": "Cloud infrastructure providers connected to Port",
-      "icon": "cloud",
-      "schema": {
-        "properties": {
-          "id": { "type": "string", "title": "ID" },
-          "name": { "type": "string", "title": "Name" },
-          "provider": { "type": "string", "title": "Provider" },
-          "environment": { "type": "string", "title": "Environment" },
-          "external_id": { "type": "string", "title": "External ID" }
-        },
-        "required": []
-      },
-      "relations": {}
-    },
+   
     {
       "identifier": "issueGroup",
       "title": "Issue Group",
@@ -150,45 +134,7 @@
         "required": []
       },
       "relations": {}
-    },
-    {
-      "identifier": "codeRepository",
-      "title": "Code Repository",
-      "description": "Source code repositories monitored by Aikido",
-      "icon": "code",
-      "schema": {
-        "properties": {
-          "id": { "type": "number", "title": "ID" },
-          "name": { "type": "string", "title": "Name" },
-          "external_repo_id": { "type": "string", "title": "External Repo ID" },
-          "provider": { "type": "string", "title": "Provider" },
-          "active": { "type": "boolean", "title": "Active" },
-          "url": { "type": "string", "title": "URL" },
-          "branch": { "type": "string", "title": "Branch" },
-          "last_scanned_at": { "type": "number", "title": "Last Scanned Timestamp" }
-        },
-        "required": []
-      },
-      "relations": {}
-    },
-    {
-      "identifier": "containerImage",
-      "title": "Container Image",
-      "description": "Docker container images scanned by Aikido",
-      "icon": "docker",
-      "schema": {
-        "properties": {
-          "id": { "type": "number", "title": "ID" },
-          "name": { "type": "string", "title": "Name" },
-          "provider": { "type": "string", "title": "Provider" },
-          "registry_name": { "type": "string", "title": "Registry Name" },
-          "tag": { "type": "string", "title": "Tag" },
-          "last_scanned_at": { "type": "number", "title": "Last Scanned Timestamp" },
-          "last_scanned_tag": { "type": "string", "title": "Last Scanned Tag" }
-        },
-        "required": []
-      },
-      "relations": {}
     }
+   
   ]
   
