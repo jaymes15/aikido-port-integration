@@ -7,7 +7,7 @@ from aikido.resync_handlers import (
 
 )
 from logging_config import get_logger
-from aikido.webhooks.registry import register_webhook_processors
+from aikido.webhooks_processors.registry import register_webhook_processors
 
 
 logger = get_logger()

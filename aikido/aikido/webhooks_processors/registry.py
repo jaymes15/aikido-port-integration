@@ -1,5 +1,5 @@
 from port_ocean.context.ocean import ocean
-from aikido.webhooks.webhook_processors import AikidoIssueCreatedWebhookProcessor
+from aikido.webhooks_processors.processors import AikidoIssueCreatedWebhookProcessor
 from logging_config import get_logger
 
 logger = get_logger()
