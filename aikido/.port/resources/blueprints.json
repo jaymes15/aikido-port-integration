@@ -1,49 +1,6 @@
 [
    
     {
-      "identifier": "issueGroup",
-      "title": "Issue Group",
-      "description": "Groups of related security issues with common characteristics",
-      "icon": "shield",
-      "schema": {
-        "properties": {
-          "id": { "type": "string", "title": "ID" },
-          "type": { "type": "string", "title": "Type" },
-          "title": { "type": "string", "title": "Title" },
-          "description": { "type": "string", "title": "Description" },
-          "severity_score": { "type": "number", "title": "Severity Score" },
-          "severity": {
-            "type": "string",
-            "enum": ["critical", "high", "medium", "low"],
-            "title": "Severity"
-          },
-          "group_status": { "type": "string", "title": "Status" },
-          "time_to_fix_minutes": { "type": "number", "title": "Time To Fix (minutes)" },
-          "locations": {
-            "type": "array",
-            "title": "Locations",
-            "items": {
-              "type": "object",
-              "title": "Location",
-              "properties": {
-                "id": { "type": "number", "title": "ID" },
-                "name": { "type": "string", "title": "Name" },
-                "type": { "type": "string", "title": "Type" }
-              }
-            }
-          },
-          "how_to_fix": { "type": "string", "title": "How To Fix" },
-          "related_cve_ids": {
-            "type": "array",
-            "items": { "type": "string", "title": "CVE ID" },
-            "title": "Related CVE IDs"
-          }
-        },
-        "required": []
-      },
-      "relations": {}
-    },
-    {
       "identifier": "issue",
       "title": "Issue",
       "description": "Individual security vulnerabilities and issues detected by Aikido",

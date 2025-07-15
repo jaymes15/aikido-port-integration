@@ -2,7 +2,6 @@ from typing import Any
 from port_ocean.context.ocean import ocean
 from aikido.kind import ObjectKind
 from aikido.resync_handlers import (
-    resync_issue_groups,
     resync_issues,
     resync_issue_counts,
 
@@ -15,15 +14,6 @@ logger = get_logger()
 
 # Initialize the Aikido client
 client = None
-
-
-@ocean.on_resync(ObjectKind.ISSUE_GROUP.value)
-async def on_resync_issue_group(kind: str) -> list[dict[str, Any]]:
-    """Handle resync events for issue groups"""
-    logger.info(f"[main] Resync event received for kind={kind}")
-    result = await resync_issue_groups(kind)
-    logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
-    return result
 
 
 @ocean.on_resync(ObjectKind.ISSUE_COUNT.value)

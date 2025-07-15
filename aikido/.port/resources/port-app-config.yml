@@ -2,26 +2,6 @@ deleteDependentEntities: true
 createMissingRelatedEntities: true
 repositoryType: 'all'
 resources:
-  - kind: issue-group
-    selector:
-      query: "true"
-    port:
-      entity:
-        mappings:
-          identifier: '"issue-group-" + (.id|tostring)'
-          title: .title
-          blueprint: '"issueGroup"'
-          properties:
-            type: .type
-            description: .description
-            severity_score: .severity_score
-            severity: .severity
-            group_status: .group_status
-            time_to_fix_minutes: .time_to_fix_minutes
-            locations: .locations
-            how_to_fix: .how_to_fix
-            related_cve_ids: .related_cve_ids
-
   - kind: issue
     selector:
       query: "true"
