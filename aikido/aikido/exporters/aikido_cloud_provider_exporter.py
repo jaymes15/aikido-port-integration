@@ -2,6 +2,7 @@ from typing import Any, Dict, List
 from aikido.auth import AikidoAuth
 from aikido.http.rest_client import RestClient
 from logging_config import get_logger
+from aikido.kind import ObjectKind
 
 logger = get_logger()
 
@@ -9,7 +10,7 @@ logger = get_logger()
 class AikidoCloudProviderExporter:
     """Exporter for Aikido Cloud Providers"""
 
-    KIND = "aikidoCloudProvider"
+    KIND = ObjectKind.CLOUD_PROVIDER.value
 
     def __init__(self):
         self.auth = AikidoAuth.get_instance()

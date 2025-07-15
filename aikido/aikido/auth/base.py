@@ -1,12 +1,11 @@
-import os
 import asyncio
 import httpx
+from logging_config import get_logger
 from typing import Optional
-from dotenv import load_dotenv
+from port_ocean.context.ocean import ocean
 from aikido.auth.enums import AikidoTokenResponse
 
-load_dotenv()
-
+logger = get_logger()
 
 class AikidoAuth:
     _instance = None
@@ -21,12 +20,12 @@ class AikidoAuth:
     def __init__(self):
         if self._initialized:
             return
-
-        self.client_id = os.getenv("OCEAN__INTEGRATION__CONFIG__CLIENT_ID")
-        self.client_secret = os.getenv("OCEAN__INTEGRATION__CONFIG__CLIENT_SECRET")
-        self.base_url = "https://app.aikido.dev/api"
-        self.token_url = f"{self.base_url}/oauth/token"
-
+        
+        self.client_id = ocean.integration_config["client_id"]
+        self.client_secret = ocean.integration_config["client_secret"]
+        self.base_url = ocean.integration_config["base_url"]
+        self.token_url = f"{self.base_url}/api/oauth/token"
+    
         self._token: Optional[AikidoTokenResponse] = None
         self._token_lock = asyncio.Lock()
         self._initialized = True
@@ -66,8 +65,7 @@ class AikidoAuth:
                 data = response.json()
                 self._token = AikidoTokenResponse(**data).with_expiry()
             except Exception as e:
-                print("::::::ERROR#::::::", e)
-                print("::::::RESPONSE#::::::", response.text)
+                logger.error(f"Error refreshing token: {e}")
                 raise
 
     async def invalidate_token(self):

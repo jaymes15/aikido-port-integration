@@ -2,13 +2,14 @@ from typing import Any, Dict, List
 from aikido.auth import AikidoAuth
 from aikido.http.rest_client import RestClient
 from logging_config import get_logger
+from aikido.kind import ObjectKind
 
 logger = get_logger()
 
 
 class AikidoIssueCountExporter:
-    KIND = "aikidoIssueCount"
     """Exporter for Aikido Issue Counts"""
+    KIND = ObjectKind.ISSUE_COUNT.value
 
     def __init__(self):
         self.auth = AikidoAuth.get_instance()
@@ -57,6 +58,4 @@ class AikidoIssueCountExporter:
             # Return mock data for testing
             return []
 
-    async def close(self):
-        """Close the HTTP client"""
-        await self.client.close()
+

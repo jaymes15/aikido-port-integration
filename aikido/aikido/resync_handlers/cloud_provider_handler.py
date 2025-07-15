@@ -9,15 +9,13 @@ async def resync_cloud_providers(kind: str) -> list[dict[str, Any]]:
 
     try:
         exporter = AikidoCloudProviderExporter()
-        try:
-            cloud_providers = await exporter.export()
-            logger.info(f"📦 Retrieved {len(cloud_providers)} cloud providers from Aikido")
-            logger.info(
+        
+        cloud_providers = await exporter.export()
+        logger.info(f"📦 Retrieved {len(cloud_providers)} cloud providers from Aikido")
+        logger.info(
                 f"✅ Cloud provider resync completed successfully. Returning {len(cloud_providers)} cloud providers"
             )
-            return cloud_providers
-        finally:
-            await exporter.close()
+        return cloud_providers
 
     except Exception as e:
         logger.error(f"❌ Error during cloud provider resync: {str(e)}", exc_info=True)

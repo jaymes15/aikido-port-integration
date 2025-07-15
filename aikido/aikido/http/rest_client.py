@@ -1,138 +1,99 @@
-import os
+import asyncio
 import httpx
-from typing import Optional, Dict, Any, TYPE_CHECKING
-from aikido.decorators import retry_with_token_refresh
 from logging_config import get_logger
+from port_ocean.utils import http_async_client
+from port_ocean.context.ocean import ocean
+from typing import Optional, Any, Dict
 
 logger = get_logger()
 
-if TYPE_CHECKING:
-    from aikido.auth import AikidoAuth
-
 
 class RestClient:
-    def __init__(
-        self, auth: "AikidoAuth", base_url: Optional[str] = None, timeout: float = 10.0
-    ):
+    def __init__(self, auth, base_url: Optional[str] = None, timeout: float = 30.0):
         self.auth = auth
-        self.base_url = base_url or os.getenv(
-            "OCEAN__INTEGRATION__CONFIG__BASE_URL",
-            "https://app.aikido.dev/api/public/v1",
-        )
-        self.client = httpx.AsyncClient(base_url=self.base_url, timeout=timeout)
+        self.base_url = f"{base_url or ocean.integration_config['base_url']}/api/public/v1"
+        self.client = http_async_client
+        self.client.timeout = httpx.Timeout(timeout)
 
     def _build_headers(self, token: str) -> Dict[str, str]:
-        headers = {"Accept": "application/json"}
-        if token:
-            headers["Authorization"] = f"Bearer {token}"
-        return headers
+        """Build headers for the API request"""
+        return {
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/json",
+        }
 
-    @retry_with_token_refresh
-    async def get(
+    async def _send_api_request(
         self,
+        method: str,
         url: str,
         params: Optional[Dict[str, Any]] = None,
-        token: Optional[str] = None,
-    ) -> httpx.Response:
-        headers = self._build_headers(token)
-        full_url = f"{self.base_url}{url}"
-        logger.info(f"[RestClient] GET {full_url}")
-        logger.debug(f"[RestClient] GET headers={headers} params={params}")
-        try:
-            response = await self.client.get(full_url, params=params, headers=headers)
-            logger.debug(
-                f"[RestClient] GET {full_url} status={response.status_code} body={response.text[:300]}"
-            )
-            return response
-        except Exception as e:
-            logger.error(f"[RestClient] GET {full_url} failed: {e}", exc_info=True)
-            raise
-
-    @retry_with_token_refresh
-    async def post(
-        self,
-        url: str,
         json: Optional[Dict[str, Any]] = None,
-        token: Optional[str] = None,
+        retry_count: int = 0,
+        max_retries: int = 3,
     ) -> httpx.Response:
-        headers = self._build_headers(token)
+        """Send an API request to the Aikido API"""
+        token = await self.auth.get_token()
+        headers = self._build_headers(token.access_token)
         full_url = f"{self.base_url}{url}"
-        logger.info(f"[RestClient] POST {full_url}")
-        logger.debug(f"[RestClient] POST headers={headers} json={json}")
+
         try:
-            response = await self.client.post(full_url, json=json, headers=headers)
-            logger.debug(
-                f"[RestClient] POST {full_url} status={response.status_code} body={response.text[:300]}"
+            response = await self.client.request(
+                method=method,
+                url=full_url,
+                headers=headers,
+                params=params,
+                json=json,
             )
+
+            if response.status_code == 401:
+                logger.warning(f"[RestClient] {method} {full_url} → 401. Retrying with fresh token.")
+                await self.auth.invalidate_token()
+                token = await self.auth.get_token()
+                headers = self._build_headers(token.access_token)
+                response = await self.client.request(
+                    method=method,
+                    url=full_url,
+                    headers=headers,
+                    params=params,
+                    json=json,
+                )
+
+            elif response.status_code == 429:
+                if retry_count >= max_retries:
+                    logger.error(f"[RestClient] {method} {full_url} rate limit exceeded after {max_retries} retries.")
+                    response.raise_for_status()
+
+                retry_after = int(response.headers.get("Retry-After", "1"))
+                logger.warning(f"[RestClient] {method} {full_url} → 429. Retrying in {retry_after} seconds.")
+                await asyncio.sleep(retry_after)
+                return await self._send_api_request(method, url, params, json, retry_count + 1)
+
+            response.raise_for_status()
             return response
-        except Exception as e:
-            logger.error(f"[RestClient] POST {full_url} failed: {e}", exc_info=True)
+
+        except httpx.RequestError as e:
+            logger.error(f"[RestClient] {method} {full_url} request failed: {e}", exc_info=True)
+            raise
+        except httpx.HTTPStatusError as e:
+            logger.error(f"[RestClient] {method} {full_url} HTTP error: {e}", exc_info=True)
             raise
 
-    @retry_with_token_refresh
-    async def put(
-        self,
-        url: str,
-        json: Optional[Dict[str, Any]] = None,
-        token: Optional[str] = None,
-    ) -> httpx.Response:
-        headers = self._build_headers(token)
-        full_url = f"{self.base_url}{url}"
-        logger.info(f"[RestClient] PUT {full_url}")
-        logger.debug(f"[RestClient] PUT headers={headers} json={json}")
-        try:
-            response = await self.client.put(full_url, json=json, headers=headers)
-            logger.debug(
-                f"[RestClient] PUT {full_url} status={response.status_code} body={response.text[:300]}"
-            )
-            return response
-        except Exception as e:
-            logger.error(f"[RestClient] PUT {full_url} failed: {e}", exc_info=True)
-            raise
+    async def get(self, url: str, params: Dict[str, Any] = None):
+        """Send a GET request to the Aikido API"""
+        return await self._send_api_request("GET", url, params=params)
 
-    @retry_with_token_refresh
-    async def patch(
-        self,
-        url: str,
-        json: Optional[Dict[str, Any]] = None,
-        token: Optional[str] = None,
-    ) -> httpx.Response:
-        headers = self._build_headers(token)
-        full_url = f"{self.base_url}{url}"
-        logger.info(f"[RestClient] PATCH {full_url}")
-        logger.debug(f"[RestClient] PATCH headers={headers} json={json}")
-        try:
-            response = await self.client.patch(full_url, json=json, headers=headers)
-            logger.debug(
-                f"[RestClient] PATCH {full_url} status={response.status_code} body={response.text[:300]}"
-            )
-            return response
-        except Exception as e:
-            logger.error(f"[RestClient] PATCH {full_url} failed: {e}", exc_info=True)
-            raise
+    async def post(self, url: str, json: Dict[str, Any] = None):
+        """Send a POST request to the Aikido API"""
+        return await self._send_api_request("POST", url, json=json)
 
-    @retry_with_token_refresh
-    async def delete(self, url: str, token: Optional[str] = None) -> httpx.Response:
-        headers = self._build_headers(token)
-        full_url = f"{self.base_url}{url}"
-        logger.info(f"[RestClient] DELETE {full_url}")
-        logger.debug(f"[RestClient] DELETE headers={headers}")
-        try:
-            response = await self.client.delete(full_url, headers=headers)
-            logger.debug(
-                f"[RestClient] DELETE {full_url} status={response.status_code} body={response.text[:300]}"
-            )
-            return response
-        except Exception as e:
-            logger.error(f"[RestClient] DELETE {full_url} failed: {e}", exc_info=True)
-            raise
+    async def put(self, url: str, json: Dict[str, Any] = None):
+        """Send a PUT request to the Aikido API"""
+        return await self._send_api_request("PUT", url, json=json)
 
-    async def close(self):
-        """Close the HTTP client"""
-        await self.client.aclose()
+    async def patch(self, url: str, json: Dict[str, Any] = None):
+        """Send a PATCH request to the Aikido API"""
+        return await self._send_api_request("PATCH", url, json=json)
 
-    async def __aenter__(self):
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.close()
+    async def delete(self, url: str):
+        """Send a DELETE request to the Aikido API"""
+        return await self._send_api_request("DELETE", url)

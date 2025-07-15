@@ -9,15 +9,14 @@ async def resync_issues(kind: str) -> list[dict[str, Any]]:
 
     try:
         exporter = AikidoIssueExporter()
-        try:
-            issues = await exporter.export()
-            logger.info(f"📦 Retrieved {len(issues)} issues from Aikido")
-            logger.info(
-                f"✅ Issue resync completed successfully. Returning {len(issues)} issues"
-            )
-            return issues
-        finally:
-            await exporter.close()
+ 
+        issues = await exporter.export()
+        logger.info(f"📦 Retrieved {len(issues)} issues from Aikido")
+        logger.info(
+            f"✅ Issue resync completed successfully. Returning {len(issues)} issues"
+        )
+        return issues
+
 
     except Exception as e:
         logger.error(f"❌ Error during issue resync: {str(e)}", exc_info=True)

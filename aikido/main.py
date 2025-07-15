@@ -1,7 +1,6 @@
 from typing import Any
 from port_ocean.context.ocean import ocean
 from aikido.kind import ObjectKind
-from aikido.auth import AikidoAuth
 from aikido.resync_handlers import (
     resync_issue_groups,
     resync_issues,
@@ -20,78 +19,64 @@ logger = get_logger()
 client = None
 
 
-@ocean.on_start()
-async def on_start():
-    """Initialize the Aikido integration"""
-    global client
-    logger.info("[main] 🚀 Aikido integration starting up...")
-    logger.info(f"[main] 🔧 Integration type: {ocean.config.integration.type}")
-    logger.info(
-        f"[main] 🆔 Integration identifier: {ocean.config.integration.identifier}"
-    )
-    logger.info(f"[main] 🌐 Port base URL: {ocean.config.port.base_url}")
-    logger.info(f"[main] 📊 Event listener type: {ocean.config.event_listener.type}")
-    if hasattr(ocean.config.event_listener, "interval"):
-        logger.info(
-            f"[main] ⏰ Polling interval: {ocean.config.event_listener.interval} seconds"
-        )
-    
-    # Access integration configuration
-    logger.info(f"[main] 🔑 Aikido Client ID configured: {'aikidoClientId' in ocean.integration_config}")
-    logger.info(f"[main] 🔑 Aikido Client Secret configured: {'aikidoClientSecret' in ocean.integration_config}")
-    
-    # Initialize auth
-    AikidoAuth.get_instance()
-    
-    logger.info("[main] ✅ Aikido integration started successfully")
-
-
-@ocean.on_resync()
-async def on_resync(kind: str) -> list[dict[str, Any]]:
-    """Handle resync events for different Aikido resource kinds"""
+@ocean.on_resync(ObjectKind.AIKIDO_ISSUE_GROUP.value)
+async def on_resync_issue_group(kind: str) -> list[dict[str, Any]]:
+    """Handle resync events for issue groups"""
     logger.info(f"[main] Resync event received for kind={kind}")
-    try:
-        if kind == ObjectKind.AIKIDO_ISSUE_GROUP.value:
-            logger.info(f"[main] Handling issue groups resync for kind={kind}")
-            result = await resync_issue_groups(kind)
-            logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
-            return result
-        elif kind == ObjectKind.AIKIDO_ISSUE_COUNT.value:
-            logger.info(f"[main] Handling issue counts resync for kind={kind}")
-            result = await resync_issue_counts(kind)
-            logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
-            return result
-        elif kind == ObjectKind.AIKIDO_CLOUD_PROVIDER.value:
-            logger.info(f"[main] Handling cloud providers resync for kind={kind}")
-            result = await resync_cloud_providers(kind)
-            logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
-            return result
-        elif kind == ObjectKind.AIKIDO_CODE_REPOSITORY.value:
-            logger.info(f"[main] Handling code repositories resync for kind={kind}")
-            result = await resync_code_repositories(kind)
-            logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
-            return result
-        elif kind == ObjectKind.AIKIDO_CONTAINER_IMAGE.value:
-            logger.info(f"[main] Handling container images resync for kind={kind}")
-            result = await resync_container_images(kind)
-            logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
-            return result
-        elif kind == ObjectKind.AIKIDO_ISSUE.value:
-            logger.info(f"[main] Handling issues resync for kind={kind}")
-            result = await resync_issues(kind)
-            logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
-            return result
-        else:
-            logger.warning(f"[main] ⚠️ Unsupported kind requested: {kind}")
-            logger.warning(
-                f"[main] Available kinds: {ObjectKind.AIKIDO_ISSUE_GROUP.value}, {ObjectKind.AIKIDO_ISSUE_COUNT.value}, {ObjectKind.AIKIDO_ISSUE.value}, {ObjectKind.AIKIDO_CLOUD_PROVIDER.value}, {ObjectKind.AIKIDO_CODE_REPOSITORY.value}, {ObjectKind.AIKIDO_CONTAINER_IMAGE.value}"
-            )
-            return []
-    except Exception as e:
-        logger.error(
-            f"[main] Exception during resync for kind={kind}: {e}", exc_info=True
-        )
-        return []
+    result = await resync_issue_groups(kind)
+    logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
+    return result
+
+
+@ocean.on_resync(ObjectKind.AIKIDO_ISSUE_COUNT.value)
+async def on_resync_issue_count(kind: str) -> list[dict[str, Any]]:
+    """Handle resync events for issue counts"""
+    logger.info(f"[main] Resync event received for kind={kind}")
+    result = await resync_issue_counts(kind)
+    logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
+    return result
+
+
+@ocean.on_resync(ObjectKind.AIKIDO_CLOUD_PROVIDER.value)
+async def on_resync_cloud_provider(kind: str) -> list[dict[str, Any]]:
+    """Handle resync events for cloud providers"""
+    logger.info(f"[main] Resync event received for kind={kind}")
+    result = await resync_cloud_providers(kind)
+    logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
+    return result
+
+
+@ocean.on_resync(ObjectKind.AIKIDO_CODE_REPOSITORY.value)
+async def on_resync_code_repository(kind: str) -> list[dict[str, Any]]:
+    """Handle resync events for code repositories"""
+    logger.info(f"[main] Resync event received for kind={kind}")
+    result = await resync_code_repositories(kind)
+    logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
+    return result
+
+
+@ocean.on_resync(ObjectKind.AIKIDO_CONTAINER_IMAGE.value)
+async def on_resync_container_image(kind: str) -> list[dict[str, Any]]:
+    """Handle resync events for container images"""
+    logger.info(f"[main] Resync event received for kind={kind}")
+    result = await resync_container_images(kind)
+    logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
+    return result
+
+
+
+@ocean.on_resync(ObjectKind.AIKIDO_ISSUE.value)
+async def on_resync_issue(kind: str) -> list[dict[str, Any]]:
+    """Handle resync events for issues"""
+    logger.info(f"[main] Resync event received for kind={kind}")
+    result = await resync_issues(kind)
+    logger.info(f"[main] Resync for kind={kind} returned {len(result)} items.")
+    return result
+
+
+
+
+
 
 
 # Register webhook processors

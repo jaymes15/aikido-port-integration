@@ -9,15 +9,14 @@ async def resync_container_images(kind: str) -> list[dict[str, Any]]:
 
     try:
         exporter = AikidoContainerImageExporter()
-        try:
-            container_images = await exporter.export()
-            logger.info(f"📦 Retrieved {len(container_images)} container images from Aikido")
-            logger.info(
-                f"✅ Container image resync completed successfully. Returning {len(container_images)} container images"
-            )
-            return container_images
-        finally:
-            await exporter.close()
+    
+        container_images = await exporter.export()
+        logger.info(f"📦 Retrieved {len(container_images)} container images from Aikido")
+        logger.info(
+            f"✅ Container image resync completed successfully. Returning {len(container_images)} container images"
+        )
+        return container_images
+      
 
     except Exception as e:
         logger.error(f"❌ Error during container image resync: {str(e)}", exc_info=True)
