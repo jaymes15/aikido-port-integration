@@ -19,7 +19,7 @@ logger = get_logger()
 client = None
 
 
-@ocean.on_resync(ObjectKind.AIKIDO_ISSUE_GROUP.value)
+@ocean.on_resync(ObjectKind.ISSUE_GROUP.value)
 async def on_resync_issue_group(kind: str) -> list[dict[str, Any]]:
     """Handle resync events for issue groups"""
     logger.info(f"[main] Resync event received for kind={kind}")
@@ -28,7 +28,7 @@ async def on_resync_issue_group(kind: str) -> list[dict[str, Any]]:
     return result
 
 
-@ocean.on_resync(ObjectKind.AIKIDO_ISSUE_COUNT.value)
+@ocean.on_resync(ObjectKind.ISSUE_COUNT.value)
 async def on_resync_issue_count(kind: str) -> list[dict[str, Any]]:
     """Handle resync events for issue counts"""
     logger.info(f"[main] Resync event received for kind={kind}")
@@ -37,7 +37,7 @@ async def on_resync_issue_count(kind: str) -> list[dict[str, Any]]:
     return result
 
 
-@ocean.on_resync(ObjectKind.AIKIDO_CLOUD_PROVIDER.value)
+@ocean.on_resync(ObjectKind.CLOUD_PROVIDER.value)
 async def on_resync_cloud_provider(kind: str) -> list[dict[str, Any]]:
     """Handle resync events for cloud providers"""
     logger.info(f"[main] Resync event received for kind={kind}")
@@ -46,7 +46,7 @@ async def on_resync_cloud_provider(kind: str) -> list[dict[str, Any]]:
     return result
 
 
-@ocean.on_resync(ObjectKind.AIKIDO_CODE_REPOSITORY.value)
+@ocean.on_resync(ObjectKind.CODE_REPOSITORY.value)
 async def on_resync_code_repository(kind: str) -> list[dict[str, Any]]:
     """Handle resync events for code repositories"""
     logger.info(f"[main] Resync event received for kind={kind}")
@@ -55,7 +55,7 @@ async def on_resync_code_repository(kind: str) -> list[dict[str, Any]]:
     return result
 
 
-@ocean.on_resync(ObjectKind.AIKIDO_CONTAINER_IMAGE.value)
+@ocean.on_resync(ObjectKind.CONTAINER_IMAGE.value)
 async def on_resync_container_image(kind: str) -> list[dict[str, Any]]:
     """Handle resync events for container images"""
     logger.info(f"[main] Resync event received for kind={kind}")
@@ -65,7 +65,7 @@ async def on_resync_container_image(kind: str) -> list[dict[str, Any]]:
 
 
 
-@ocean.on_resync(ObjectKind.AIKIDO_ISSUE.value)
+@ocean.on_resync(ObjectKind.ISSUE.value)
 async def on_resync_issue(kind: str) -> list[dict[str, Any]]:
     """Handle resync events for issues"""
     logger.info(f"[main] Resync event received for kind={kind}")
