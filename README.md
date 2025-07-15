@@ -64,11 +64,8 @@ This integration syncs Aikido resources into [Port Ocean](https://www.getport.io
 * Syncs various Aikido resources into Port Ocean:
 
   * Issues
-  * Groups
-  * Cloud Providers
-  * Code Repositories
-  * Container Images
-  * And more
+  * Issues Count
+
 * Fully extendable and ready for production use.
 * Designed for easy local and cloud deployment.
 
@@ -92,10 +89,10 @@ helm upgrade --install git-init port-labs/port-ocean \
   --set port.clientSecret=<PortClientSecret> \
   --set initializePortResources=true \
   --set integration.identifier=<Identifier> \
-  --set integration.type="github" \
+  --set integration.type="aikido" \
   --set integration.eventListener.type="POLLING" \
-  --set integration.config.aikidoClientId=<aikidoClientId> \
-  --set integration.config.aikidoClientSecret=<aikidoClientSecret>
+  --set integration.config.clientId=<aikidoClientId> \
+  --set integration.config.clientSecret=<aikidoClientSecret>
 ```
 
 > **Note:** Replace placeholder values (`<...>`) with your actual credentials.
