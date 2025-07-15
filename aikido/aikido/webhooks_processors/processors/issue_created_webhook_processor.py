@@ -34,6 +34,7 @@ class AikidoIssueCreatedWebhookProcessor(BaseWebhookProcessorMixin):
         logger.info(f"[{WEBHOOK_NAME}] Matching kinds for event '{event_type}': {kinds}")
         return kinds
 
+
     async def validate_payload(self, payload: EventPayload) -> bool:
         # Validate the required keys are present
         issue_data = payload.get("payload", {})
@@ -58,10 +59,17 @@ class AikidoIssueCreatedWebhookProcessor(BaseWebhookProcessorMixin):
         issue_data = payload.get("payload", {})
         issue_id = issue_data.get("issue_id")
         logger.info(f"[{WEBHOOK_NAME}] Processing issue with ID: {issue_id}")
+        data = {
+            "id": issue_id,
+            "kind": ObjectKind.ISSUE.value,
+            "severity_score": issue_data.get("severity_score", 0),
+            "severity": issue_data.get("severity", "").lower(),
+            "status": issue_data.get("status", ""),
+        }
 
         result = WebhookEventRawResults(
             updated_raw_results=[
-                issue_data
+                data
             ],
             deleted_raw_results=[]
         )
