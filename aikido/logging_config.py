@@ -22,32 +22,7 @@ def setup_logging(level: str = "INFO"):
         diagnose=True,
     )
 
-    # Add file handler for persistent logs
-    logger.add(
-        "logs/integration.log",
-        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
-        level=level,
-        rotation="10 MB",
-        retention="7 days",
-        compression="zip",
-        backtrace=True,
-        diagnose=True,
-    )
-
-    # Add error file handler
-    logger.add(
-        "logs/errors.log",
-        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
-        level="ERROR",
-        rotation="5 MB",
-        retention="30 days",
-        compression="zip",
-        backtrace=True,
-        diagnose=True,
-    )
-
     logger.info(f"🔧 Logging configured with level: {level}")
-    logger.info("📁 Logs will be saved to: logs/integration.log and logs/errors.log")
 
 
 def get_logger():
