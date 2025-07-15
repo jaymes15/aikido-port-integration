@@ -8,25 +8,27 @@ features:
   - type: exporter
     section: Security & Compliance
     resources:
-      - kind: aikido-issue-group
-      - kind: aikido-issue
-      - kind: aikido-cloud-provider
-      - kind: aikido-code-repository
-      - kind: aikido-container-image
-      - kind: aikido-issue-count
+      - kind: issue-group
+      - kind: issue
+      - kind: cloud-provider
+      - kind: code-repository
+      - kind: container-image
+      - kind: issue-count
 
 configurations:
-  - name: aikidoClientId
+  - name: clientId
     type: string
     sensitive: true
-  - name: aikidoClientSecret
+    description: The client ID of the Aikido API
+  - name: clientSecret
     type: string
     sensitive: true
-  - name: aikidoBaseUrl
+    description: The client secret of the Aikido API
+  - name: baseUrl
     type: url
     required: false
-    default: https://api.aikido.dev/api/public/v1
-    description: The base URL of the Aikido API
+    default: https://api.aikido.dev
+    description: The base URL (FQDN only) of the Aikido API
   
 saas:
   enabled: true

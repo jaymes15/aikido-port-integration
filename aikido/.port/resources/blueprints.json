@@ -1,8 +1,8 @@
 [
     {
-      "identifier": "aikidoCloudProvider",
-      "title": "Aikido Cloud Provider",
-      "description": "Cloud infrastructure providers connected to Aikido",
+      "identifier": "cloudProvider",
+      "title": "Cloud Provider",
+      "description": "Cloud infrastructure providers connected to Port",
       "icon": "cloud",
       "schema": {
         "properties": {
@@ -17,8 +17,8 @@
       "relations": {}
     },
     {
-      "identifier": "aikidoIssueGroup",
-      "title": "Aikido Issue Group",
+      "identifier": "issueGroup",
+      "title": "Issue Group",
       "description": "Groups of related security issues with common characteristics",
       "icon": "shield",
       "schema": {
@@ -60,8 +60,8 @@
       "relations": {}
     },
     {
-      "identifier": "aikidoIssue",
-      "title": "Aikido Issue",
+      "identifier": "issue",
+      "title": "Issue",
       "description": "Individual security vulnerabilities and issues detected by Aikido",
       "icon": "bug",
       "schema": {
@@ -118,8 +118,8 @@
       "relations": {}
     },
     {
-      "identifier": "aikidoIssueCount",
-      "title": "Aikido Issue Count",
+      "identifier": "issueCount",
+      "title": "Issue Count",
       "description": "Aggregated counts of security issues by severity level",
       "icon": "dashboard",
       "schema": {
@@ -152,8 +152,8 @@
       "relations": {}
     },
     {
-      "identifier": "aikidoCodeRepository",
-      "title": "Aikido Code Repository",
+      "identifier": "codeRepository",
+      "title": "Code Repository",
       "description": "Source code repositories monitored by Aikido",
       "icon": "code",
       "schema": {
@@ -172,8 +172,8 @@
       "relations": {}
     },
     {
-      "identifier": "aikidoContainerImage",
-      "title": "Aikido Container Image",
+      "identifier": "containerImage",
+      "title": "Container Image",
       "description": "Docker container images scanned by Aikido",
       "icon": "docker",
       "schema": {

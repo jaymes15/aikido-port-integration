@@ -2,15 +2,15 @@ deleteDependentEntities: true
 createMissingRelatedEntities: true
 repositoryType: 'all'
 resources:
-  - kind: aikido-issue-group
+  - kind: issue-group
     selector:
       query: "true"
     port:
       entity:
         mappings:
-          identifier: '"aikido-issue-group-" + (.id|tostring)'
+          identifier: '"issue-group-" + (.id|tostring)'
           title: .title
-          blueprint: '"aikidoIssueGroup"'
+          blueprint: '"issueGroup"'
           properties:
             type: .type
             description: .description
@@ -22,15 +22,15 @@ resources:
             how_to_fix: .how_to_fix
             related_cve_ids: .related_cve_ids
 
-  - kind: aikido-issue
+  - kind: issue
     selector:
       query: "true"
     port:
       entity:
         mappings:
-          identifier: '"aikido-issue-" + (.id|tostring)'
+          identifier: '"issue-" + (.id|tostring)'
           title: '(.type + " - " + (.affected_package // "Unknown Package"))'
-          blueprint: '"aikidoIssue"'
+          blueprint: '"issue"'
           properties:
             group_id: .group_id
             attack_surface: .attack_surface
@@ -62,29 +62,29 @@ resources:
             sla_days: .sla_days
             sla_remediate_by: .sla_remediate_by
 
-  - kind: aikido-cloud-provider
+  - kind: cloud-provider
     selector:
       query: "true"
     port:
       entity:
         mappings:
-          identifier: '"aikido-cloud-provider-" + (.id|tostring)'
+          identifier: '"cloud-provider-" + (.id|tostring)'
           title: .name
-          blueprint: '"aikidoCloudProvider"'
+          blueprint: '"cloudProvider"'
           properties:
             provider: .provider
             environment: .environment
             external_id: .external_id
 
-  - kind: aikido-code-repository
+  - kind: code-repository
     selector:
       query: "true"
     port:
       entity:
         mappings:
-          identifier: '"aikido-code-repository-" + (.id|tostring)'
+          identifier: '"code-repository-" + (.id|tostring)'
           title: .name
-          blueprint: '"aikidoCodeRepository"'
+          blueprint: '"codeRepository"'
           properties:
             name: .name
             external_repo_id: .external_repo_id
@@ -94,15 +94,15 @@ resources:
             branch: .branch
             last_scanned_at: .last_scanned_at
 
-  - kind: aikido-container-image
+  - kind: container-image
     selector:
       query: "true"
     port:
       entity:
         mappings:
-          identifier: '"aikido-container-image"'
+          identifier: '"container-image"'
           title: .name
-          blueprint: '"aikidoContainerImage"'
+          blueprint: '"containerImage"'
           properties:
             name: .name
             provider: .provider
@@ -111,15 +111,15 @@ resources:
             last_scanned_at: .last_scanned_at
             last_scanned_tag: .last_scanned_tag
 
-  - kind: aikido-issue-count
+  - kind: issue-count
     selector:
       query: "true"
     port:
       entity:
         mappings:
-          identifier: '"aikido-issue-count"'
+          identifier: '"issue-count"'
           title: '"Aikido Issue Counts"'
-          blueprint: '"aikidoIssueCount"'
+          blueprint: '"issueCount"'
           properties:
             issue_groups: .issue_groups
             issues: .issues
