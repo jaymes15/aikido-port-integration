@@ -1,5 +1,5 @@
 from typing import Any, Dict, List
-from aikido.auth import AikidoAuth
+from aikido.auth import Auth
 from aikido.http.rest_client import RestClient
 from logging_config import get_logger
 from aikido.kind import ObjectKind
@@ -7,13 +7,13 @@ from aikido.kind import ObjectKind
 logger = get_logger()
 
 
-class AikidoCloudProviderExporter:
+class CloudProviderExporter:
     """Exporter for Aikido Cloud Providers"""
 
     KIND = ObjectKind.CLOUD_PROVIDER.value
 
     def __init__(self):
-        self.auth = AikidoAuth.get_instance()
+        self.auth = Auth.get_instance()
         self.client = RestClient(self.auth)
 
     async def export(self) -> List[Dict[str, Any]]:
@@ -53,6 +53,3 @@ class AikidoCloudProviderExporter:
                 exc_info=True,
             )
             return []
-
-    async def close(self):
-        await self.client.close()

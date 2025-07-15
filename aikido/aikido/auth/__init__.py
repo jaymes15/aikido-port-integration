@@ -1,3 +1,3 @@
-from .base import AikidoAuth
+from .base import Auth
 
-__all__ = ["AikidoAuth"]
+__all__ = ["Auth"]

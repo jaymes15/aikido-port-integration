@@ -1,6 +1,6 @@
 from typing import Any
 from loguru import logger
-from aikido.exporters import AikidoContainerImageExporter
+from aikido.exporters import ContainerImageExporter
 
 
 async def resync_container_images(kind: str) -> list[dict[str, Any]]:
@@ -8,7 +8,7 @@ async def resync_container_images(kind: str) -> list[dict[str, Any]]:
     logger.info(f"🔄 Starting container image resync for kind: {kind}")
 
     try:
-        exporter = AikidoContainerImageExporter()
+        exporter = ContainerImageExporter()
     
         container_images = await exporter.export()
         logger.info(f"📦 Retrieved {len(container_images)} container images from Aikido")

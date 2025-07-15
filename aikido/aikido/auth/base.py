@@ -7,7 +7,7 @@ from aikido.auth.enums import AikidoTokenResponse
 
 logger = get_logger()
 
-class AikidoAuth:
+class Auth:
     _instance = None
     _lock = asyncio.Lock()
 
@@ -74,7 +74,7 @@ class AikidoAuth:
             self._token = None
 
     @classmethod
-    def get_instance(cls) -> "AikidoAuth":
+    def get_instance(cls) -> "Auth":
         """Get the singleton instance"""
         return cls()
 

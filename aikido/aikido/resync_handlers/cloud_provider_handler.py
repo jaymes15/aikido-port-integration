@@ -1,6 +1,6 @@
 from typing import Any
 from loguru import logger
-from aikido.exporters import AikidoCloudProviderExporter
+from aikido.exporters import CloudProviderExporter
 
 
 async def resync_cloud_providers(kind: str) -> list[dict[str, Any]]:
@@ -8,7 +8,7 @@ async def resync_cloud_providers(kind: str) -> list[dict[str, Any]]:
     logger.info(f"🔄 Starting cloud provider resync for kind: {kind}")
 
     try:
-        exporter = AikidoCloudProviderExporter()
+        exporter = CloudProviderExporter()
         
         cloud_providers = await exporter.export()
         logger.info(f"📦 Retrieved {len(cloud_providers)} cloud providers from Aikido")

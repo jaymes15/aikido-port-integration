@@ -1,6 +1,6 @@
 from typing import Any
 from loguru import logger
-from aikido.exporters import AikidoCodeRepositoryExporter
+from aikido.exporters import CodeRepositoryExporter
 
 
 async def resync_code_repositories(kind: str) -> list[dict[str, Any]]:
@@ -8,7 +8,7 @@ async def resync_code_repositories(kind: str) -> list[dict[str, Any]]:
     logger.info(f"🔄 Starting code repository resync for kind: {kind}")
 
     try:
-        exporter = AikidoCodeRepositoryExporter()
+        exporter = CodeRepositoryExporter()
    
         code_repositories = await exporter.export()
         logger.info(
